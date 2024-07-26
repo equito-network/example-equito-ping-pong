@@ -214,3 +214,5 @@ export type Chain = {
   definition: Definition;
   pingPongContract: Address;
 };
+
+export const NATIVE_ADDRESS = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";

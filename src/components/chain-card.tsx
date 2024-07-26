@@ -1,19 +1,10 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ChainSelect from "./chain-select";
-import { Button } from "@/components/ui/button";
-import {
-  ChainDirection,
-  useEquito,
-} from "@/components/providers/equito-provider";
+
+import { ChainDirection } from "@/components/providers/equito-provider";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useAccount } from "wagmi";
+import { usePing } from "@/components/providers/ping-provider";
 
 type ChainCardProps = {
   mode: ChainDirection;
@@ -21,10 +12,10 @@ type ChainCardProps = {
 
 export const ChainCard = ({ mode }: ChainCardProps) => {
   const cardTitle = `${mode === "from" ? "Source" : "Destination"} Chain`;
-  const cardCta = mode === "from" ? "Send Ping" : "Receive Ping & Send Pong";
-  const { address } = useAccount();
-  const { chain } = useEquito()[mode];
-  const isCtaDisabled = !chain || !address;
+  const { ping, setPing } = usePing();
+
+  const pingMessage = mode === "from" ? ping : "Waiting for ping...";
+  const onInput = mode === "from" ? setPing : undefined;
 
   return (
     <Card>
@@ -39,14 +30,19 @@ export const ChainCard = ({ mode }: ChainCardProps) => {
             </div>
             <div className="flex flex-col gap-4">
               <Label htmlFor="ping">Ping Message</Label>
-              <Input id="ping" placeholder="Hi from Equito..." />
+              <Input
+                id="ping"
+                value={pingMessage}
+                placeholder="Hi from Equito!"
+                onChange={({ target: { value } }) => onInput?.(value)}
+                readOnly={mode === "to"}
+                disabled={mode === "to"}
+                variant={mode === "to" ? "readonly" : "default"}
+              />
             </div>
           </div>
         </form>
       </CardContent>
-      <CardFooter className="flex justify-end">
-        <Button disabled={isCtaDisabled}>{cardCta}</Button>
-      </CardFooter>
     </Card>
   );
 };

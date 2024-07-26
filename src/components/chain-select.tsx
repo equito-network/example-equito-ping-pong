@@ -14,7 +14,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown, Link } from "lucide-react";
-import { Chain, chains } from "@/lib/config/chains";
+import { Chain, chains } from "@/lib/chains";
 import { toast } from "sonner";
 import { useSwitchChain } from "wagmi";
 import {
