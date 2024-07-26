@@ -1,4 +1,4 @@
-import { Chain } from "@/lib/config/chains";
+import { Chain } from "@/lib/chains";
 import {
   Dispatch,
   PropsWithChildren,
@@ -56,7 +56,7 @@ export const EquitoProvider = ({ children }: PropsWithChildren<object>) => {
 export const useEquito = () => {
   const context = useContext(equitoContext);
   if (!context) {
-    throw new Error("useEquitp must be used within a EquitoProvider");
+    throw new Error("useEquito must be used within a EquitoProvider");
   }
 
   return context;

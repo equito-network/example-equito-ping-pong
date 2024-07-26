@@ -9,8 +9,7 @@ import { chains } from "./chains";
 import { type Chain as Definition } from "viem";
 
 const chainDefinitions = chains.map((chain) => chain.definition) as [
-  Definition,
-  ...Definition[]
+  Definition
 ];
 
 export const getChainTrasports = () =>

@@ -2,7 +2,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { AppProvider } from "@/components/providers/app-provider";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ChainCard } from "@/components/chain-card";
-import { ProgressLoader } from "@/components/ui/progress-loader";
+import { PingButton } from "./components/ping-button";
 
 function App() {
   return (
@@ -30,10 +30,7 @@ function App() {
           </div>
           <div className="flex gap-16 items-center">
             <ChainCard mode="from" />
-            <div className="flex flex-col justify-center items-center gap-2">
-              <ProgressLoader className="w-56" dir="from" />
-              <p className="text-muted-foreground">Sending ping...</p>
-            </div>
+            <PingButton />
             <ChainCard mode="to" />
           </div>
         </div>
