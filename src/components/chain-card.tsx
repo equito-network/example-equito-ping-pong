@@ -1,9 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ChainSelect from "./chain-select";
-
-import { ChainDirection } from "@/components/providers/equito-provider";
-
 import { ChainDirection } from "@/components/providers/equito-provider";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
