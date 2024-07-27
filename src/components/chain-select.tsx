@@ -30,7 +30,7 @@ type ChainSelectProps = PopoverTriggerProps & {
   mode: ChainDirection;
 };
 
-export default function ChainSelect({ mode }: ChainSelectProps) {
+export default function ChainSelect({ mode, disabled }: ChainSelectProps) {
   const [open, setOpen] = React.useState(false);
   const { chain, setChain } = useEquito()[mode];
   const { switchChainAsync } = useSwitchChain();
@@ -61,6 +61,7 @@ export default function ChainSelect({ mode }: ChainSelectProps) {
         <Button
           role="combobox"
           className={"w-full sm:w-72 flex items-center gap-2"}
+          disabled={disabled}
         >
           <div className="flex items-center gap-2">
             {chain ? (

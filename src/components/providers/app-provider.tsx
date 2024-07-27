@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { wagmiConfig } from "@/lib/wagmi";
 import { Toaster } from "@/components/ui/sonner";
 import { EquitoProvider } from "@/components/providers/equito-provider";
-import { PingProvider } from "./ping-provider";
+import { PingPongProvider } from "@/components/providers/ping-pong-provider";
 
 const queryClient = new QueryClient();
 
@@ -22,10 +22,10 @@ export const AppProvider = ({ children }: React.PropsWithChildren<object>) => (
         })}
       >
         <EquitoProvider>
-          <PingProvider>
+          <PingPongProvider>
             {children}
             <Toaster />
-          </PingProvider>
+          </PingPongProvider>
         </EquitoProvider>
       </RainbowKitProvider>
     </QueryClientProvider>

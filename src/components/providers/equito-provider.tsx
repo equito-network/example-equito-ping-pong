@@ -1,3 +1,4 @@
+import { useRouter } from "@/hooks/use-router";
 import { Chain } from "@/lib/chains";
 import {
   Dispatch,
@@ -9,17 +10,23 @@ import {
   useMemo,
 } from "react";
 
-type ChainState = {
+export type EquitoState = {
   chain?: Chain;
+  router: ReturnType<typeof useRouter>;
+};
+
+export type EquitoActions = {
   setChain: Dispatch<SetStateAction<Chain | undefined>>;
 };
+
+type Equito = EquitoState & EquitoActions;
 
 export type ChainDirection = "from" | "to";
 
 type EquitoContext =
   | {
-      from: ChainState;
-      to: ChainState;
+      from: Equito;
+      to: Equito;
       reset: VoidFunction;
     }
   | undefined;
@@ -27,25 +34,34 @@ type EquitoContext =
 const equitoContext = createContext<EquitoContext>(undefined);
 
 export const EquitoProvider = ({ children }: PropsWithChildren<object>) => {
-  const [fromChain, setFromChain] = useState<ChainState["chain"]>();
-  const [toChain, setToChain] = useState<ChainState["chain"]>();
+  const [fromChain, setFromChain] = useState<Equito["chain"]>();
+  const [toChain, setToChain] = useState<Equito["chain"]>();
+
+  const fromRouter = useRouter({
+    chainSelector: fromChain?.chainSelector,
+  });
+  const toRouter = useRouter({
+    chainSelector: toChain?.chainSelector,
+  });
 
   const value = useMemo(
     () => ({
       from: {
         chain: fromChain,
         setChain: setFromChain,
+        router: fromRouter,
       },
       to: {
         chain: toChain,
         setChain: setToChain,
+        router: toRouter,
       },
       reset: () => {
         setFromChain(undefined);
         setToChain(undefined);
       },
     }),
-    [fromChain, toChain]
+    [fromChain, fromRouter, toChain, toRouter]
   );
 
   return (

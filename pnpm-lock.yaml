@@ -11,6 +11,9 @@ importers:
       '@equito-sdk/client':
         specifier: ^0.1.4
         version: 0.1.4(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@equito-sdk/core':
+        specifier: ^0.1.4
+        version: 0.1.4
       '@equito-sdk/evm':
         specifier: ^0.1.4
         version: 0.1.4
