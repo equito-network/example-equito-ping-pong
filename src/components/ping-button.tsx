@@ -22,6 +22,8 @@ export const PingButton = () => {
     ping === undefined ||
     !address ||
     isPending ||
+    pingFee.fee === undefined ||
+    pongFee.fee === undefined ||
     pingFee.isLoading ||
     pongFee.isLoading;
 
