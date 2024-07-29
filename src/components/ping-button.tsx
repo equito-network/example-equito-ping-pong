@@ -27,9 +27,9 @@ export const PingButton = () => {
 
   const onClick = () => {
     toast.promise(execute(), {
-      loading: "Executing Transaction...",
-      success: "Transaction Failed",
-      error: "Transaction Failed",
+      loading: "Executing transaction...",
+      success: "Transaction successfull",
+      error: "Transaction failed",
     });
   };
 
