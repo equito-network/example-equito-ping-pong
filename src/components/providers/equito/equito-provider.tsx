@@ -1,4 +1,3 @@
-import { useRouter } from "@/hooks/use-router";
 import { Chain } from "@/lib/chains";
 import {
   Dispatch,
@@ -9,6 +8,7 @@ import {
   useState,
   useMemo,
 } from "react";
+import { useRouter } from "./use-router";
 
 export type EquitoState = {
   chain?: Chain;

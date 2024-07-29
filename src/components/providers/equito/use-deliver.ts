@@ -8,18 +8,14 @@ import {
 import { useCallback } from "react";
 import { routerAbi } from "@equito-sdk/evm";
 import { EquitoMessage } from "@equito-sdk/core";
-import { EquitoState } from "@/components/providers/equito-provider";
 import { config } from "@/lib/wagmi";
+import { EquitoState } from "./equito-provider";
 
 type UseDeliverArgs = {
   equito: EquitoState;
-  fee?: bigint;
 };
 
-export const useDeliver = ({
-  equito: { chain, router },
-  fee,
-}: UseDeliverArgs) => {
+export const useDeliver = ({ equito: { chain, router } }: UseDeliverArgs) => {
   const { switchChainAsync } = useSwitchChain();
   const chainId = chain?.definition.id;
 
@@ -43,17 +39,18 @@ export const useDeliver = ({
   });
 
   const execute = useCallback(
-    async (proof: Hex, message: EquitoMessage, messageData: Hex) => {
+    async (
+      proof: Hex,
+      message: EquitoMessage,
+      messageData: Hex,
+      fee?: bigint
+    ) => {
       if (!chainId || !chain) {
         throw new Error("No chain found, please select a chain");
       }
 
       if (!router.data) {
         throw new Error("Router contract address not found");
-      }
-
-      if (!fee) {
-        throw new Error("Fee not found");
       }
 
       try {
@@ -64,7 +61,7 @@ export const useDeliver = ({
           address: router.data,
           abi: routerAbi,
           functionName: "deliverAndExecuteMessage",
-          value: fee,
+          ...(fee !== undefined && { value: fee }),
           args: [message, messageData, BigInt(0), proof],
           chainId,
         });
@@ -78,7 +75,7 @@ export const useDeliver = ({
         throw new Error("Transaction failed");
       }
     },
-    [chain, chainId, fee, router.data, switchChainAsync, writeContractAsync]
+    [chain, chainId, router.data, switchChainAsync, writeContractAsync]
   );
 
   return {

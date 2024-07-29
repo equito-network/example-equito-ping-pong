@@ -1,18 +1,18 @@
 import { NATIVE_ADDRESS } from "@/lib/chains";
 import { routerAbi } from "@equito-sdk/evm";
 import { useReadContract } from "wagmi";
-import { EquitoState } from "@/components/providers/equito-provider";
+import { EquitoState } from "../equito/equito-provider";
 
-type UsePingFeeArgs = {
+type UsePingPongFeeArgs = {
   equito: EquitoState;
 };
 
-export const usePingFee = ({
+export const usePingPongFee = ({
   equito: {
     chain,
     router: { data: routerAddress },
   },
-}: UsePingFeeArgs) => {
+}: UsePingPongFeeArgs) => {
   const { data: fee, ...rest } = useReadContract({
     address: routerAddress,
     abi: routerAbi,

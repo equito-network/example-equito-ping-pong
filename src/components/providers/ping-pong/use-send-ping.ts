@@ -9,16 +9,14 @@ import {
   useSwitchChain,
 } from "wagmi";
 import { config } from "@/lib/wagmi";
-import { useEquito } from "@/components/providers/equito-provider";
-import { usePingFee } from "./use-ping-fee";
-import { usePingPong } from "@/components/providers/ping-pong-provider";
+import { usePingPong } from "@/components/providers/ping-pong/ping-pong-provider";
+import { useEquito } from "../equito/equito-provider";
 
 export const useSendPing = () => {
   const { from, to } = useEquito();
   const { address } = useAccount();
   const { switchChainAsync } = useSwitchChain();
-  const { fee } = usePingFee({ equito: from });
-  const { ping } = usePingPong();
+  const { ping, pingFee } = usePingPong();
 
   const {
     data: hash,
@@ -43,7 +41,7 @@ export const useSendPing = () => {
     if (!address) throw new Error("No address found, please connect a wallet");
     if (!from.chain) throw new Error("No from chain found");
     if (!to.chain) throw new Error("No to chain found");
-    if (fee === undefined) {
+    if (pingFee.fee === undefined) {
       throw new Error("Fee not found");
     }
     if (ping === undefined) {
@@ -58,7 +56,7 @@ export const useSendPing = () => {
         address: from.chain.pingPongContract,
         abi: pingPongAbi,
         functionName: "sendPing",
-        value: fee,
+        value: pingFee.fee,
         chainId: from.chain.definition.id,
         args: [BigInt(to.chain.chainSelector), ping],
       });
@@ -75,7 +73,7 @@ export const useSendPing = () => {
     address,
     from.chain,
     to.chain,
-    fee,
+    pingFee.fee,
     ping,
     switchChainAsync,
     writeContractAsync,

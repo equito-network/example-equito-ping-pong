@@ -1,32 +1,27 @@
 import { useMutation } from "@tanstack/react-query";
 import { getBlock } from "@wagmi/core";
-import { useEquito } from "@/components/providers/equito-provider";
 import { useSendPing } from "./use-send-ping";
 import { config } from "@/lib/wagmi";
-import { useApprove } from "./use-approve";
-import { useDeliver } from "./use-deliver";
+import { useApprove } from "../equito/use-approve";
+import { useDeliver } from "../equito/use-deliver";
 import { decodeAbiParameters, parseAbiParameters, parseEventLogs } from "viem";
 import { routerAbi } from "@equito-sdk/evm";
 import { generateHash } from "@equito-sdk/viem";
-import { usePingFee } from "./use-ping-fee";
-import { usePingPong } from "@/components/providers/ping-pong-provider";
+import { usePingPong } from "@/components/providers/ping-pong/ping-pong-provider";
+import { useEquito } from "../equito/equito-provider";
 
-export const useExecutePing = () => {
+export const useExecutePingPong = () => {
   const { from, to } = useEquito();
   const approve = useApprove();
-  const { setPong, setStatus } = usePingPong();
+  const { setPong, setStatus, pongFee } = usePingPong();
   const sendPing = useSendPing();
 
-  const { fee: toFee } = usePingFee({ equito: to });
-  const fromDeliver = useDeliver({
+  const deliverPong = useDeliver({
     equito: from,
-    fee: toFee,
   });
 
-  const { fee: fromFee } = usePingFee({ equito: from });
-  const toDeliver = useDeliver({
+  const deliverPingAndSendPong = useDeliver({
     equito: to,
-    fee: fromFee,
   });
 
   const {
@@ -46,6 +41,10 @@ export const useExecutePing = () => {
 
         if (!to.chain) {
           throw new Error("No to chain found");
+        }
+
+        if (pongFee.fee === undefined) {
+          throw new Error("No fee found");
         }
 
         // start from 'from' chain
@@ -77,15 +76,17 @@ export const useExecutePing = () => {
 
         // switch to 'to' chain
         setStatus("isDeliveringPingAndSendingPong");
-        const receivePingAndSendPongReceipt = await toDeliver.execute(
-          sentPingProof,
-          sentPingMessage.message,
-          sentPingMessage.messageData
-        );
+        const deliverPingAndSendPongReceipt =
+          await deliverPingAndSendPong.execute(
+            sentPingProof,
+            sentPingMessage.message,
+            sentPingMessage.messageData,
+            pongFee.fee
+          );
 
         const sentPongMessage = parseEventLogs({
           abi: routerAbi,
-          logs: receivePingAndSendPongReceipt.logs,
+          logs: deliverPingAndSendPongReceipt.logs,
         }).flatMap(({ eventName, args }) =>
           eventName === "MessageSendRequested" ? [args] : []
         )[0];
@@ -103,7 +104,7 @@ export const useExecutePing = () => {
 
         const { timestamp: sentPongTimestamp } = await getBlock(config, {
           chainId: to.chain.definition.id,
-          blockNumber: receivePingAndSendPongReceipt.blockNumber,
+          blockNumber: deliverPingAndSendPongReceipt.blockNumber,
         });
 
         setStatus("isApprovingSentPong");
@@ -115,7 +116,7 @@ export const useExecutePing = () => {
 
         // back to 'from' chain
         setStatus("isDeliveringPong");
-        await fromDeliver.execute(
+        await deliverPong.execute(
           sentPongProof,
           sentPongMessage.message,
           sentPongMessage.messageData

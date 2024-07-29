@@ -1,23 +1,29 @@
 import { ProgressLoader } from "@/components/ui/progress-loader";
 import { Button } from "@/components/ui/button";
-import { useEquito } from "@/components/providers/equito-provider";
-import {
-  PingStatus,
-  usePingPong,
-} from "@/components/providers/ping-pong-provider";
 import { useAccount } from "wagmi";
 import { ReactNode } from "react";
 import { toast } from "sonner";
-import { useExecutePing } from "@/hooks/use-execute-ping";
+import {
+  PingStatus,
+  usePingPong,
+} from "./providers/ping-pong/ping-pong-provider";
+import { useExecutePingPong } from "./providers/ping-pong/use-execute-ping-pong";
+import { useEquito } from "./providers/equito/equito-provider";
 
 export const PingButton = () => {
   const { from, to } = useEquito();
-  const { ping, status } = usePingPong();
-  const { execute, isPending } = useExecutePing();
+  const { ping, status, pingFee, pongFee } = usePingPong();
+  const { execute, isPending } = useExecutePingPong();
 
   const { address } = useAccount();
   const isDisabled =
-    !from.chain || !to.chain || ping === undefined || !address || isPending;
+    !from.chain ||
+    !to.chain ||
+    ping === undefined ||
+    !address ||
+    isPending ||
+    pingFee.isLoading ||
+    pongFee.isLoading;
 
   const onClick = () => {
     toast.promise(execute(), {
@@ -71,24 +77,24 @@ export const PingButton = () => {
     ),
     isSuccess: (
       <>
-        <p className="text-green-500 text-sm">Ping Pong Successfull!</p>
         <Button disabled={isDisabled} onClick={onClick}>
           Send Ping & Receive Pong
         </Button>
+        <p className="text-green-500 text-sm">Ping Pong Successfull!</p>
       </>
     ),
     isError: (
       <>
-        <p className="text-destructive text-sm">Ping Pong Error</p>
         <Button disabled={isDisabled} onClick={onClick}>
           Retry
         </Button>
+        <p className="text-destructive text-sm">Ping Pong Error</p>
       </>
     ),
   };
 
   return (
-    <div className="flex flex-col justify-center items-center gap-4 w-64">
+    <div className="flex flex-col justify-center items-center gap-2 w-64">
       {sfn[status]}
     </div>
   );

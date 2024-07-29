@@ -7,6 +7,8 @@ import {
   useState,
   useMemo,
 } from "react";
+import { usePingPongFee } from "./use-ping-pong-fee";
+import { useEquito } from "../equito/equito-provider";
 
 export type PingStatus =
   | "isIdle"
@@ -25,6 +27,8 @@ type PingPongState = {
   setPong: Dispatch<SetStateAction<string | undefined>>;
   status: PingStatus;
   setStatus: Dispatch<SetStateAction<PingStatus>>;
+  pingFee: ReturnType<typeof usePingPongFee>;
+  pongFee: ReturnType<typeof usePingPongFee>;
 };
 
 type PingContext = PingPongState | undefined;
@@ -36,6 +40,10 @@ export const PingPongProvider = ({ children }: PropsWithChildren<object>) => {
   const [pong, setPong] = useState<PingPongState["ping"]>();
   const [status, setStatus] = useState<PingPongState["status"]>("isIdle");
 
+  const { from, to } = useEquito();
+  const pongFee = usePingPongFee({ equito: to });
+  const pingFee = usePingPongFee({ equito: from });
+
   const value = useMemo(
     () => ({
       ping,
@@ -44,8 +52,10 @@ export const PingPongProvider = ({ children }: PropsWithChildren<object>) => {
       setPong,
       status,
       setStatus,
+      pingFee,
+      pongFee,
     }),
-    [ping, pong, status]
+    [ping, pingFee, pong, pongFee, status]
   );
 
   return <pingContext.Provider value={value}>{children}</pingContext.Provider>;

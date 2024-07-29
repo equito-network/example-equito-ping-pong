@@ -6,8 +6,8 @@ import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { wagmiConfig } from "@/lib/wagmi";
 import { Toaster } from "@/components/ui/sonner";
-import { EquitoProvider } from "@/components/providers/equito-provider";
-import { PingPongProvider } from "@/components/providers/ping-pong-provider";
+import { PingPongProvider } from "./ping-pong/ping-pong-provider";
+import { EquitoProvider } from "./equito/equito-provider";
 
 const queryClient = new QueryClient();
 

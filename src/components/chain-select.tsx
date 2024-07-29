@@ -17,10 +17,7 @@ import { Check, ChevronsUpDown, Link } from "lucide-react";
 import { Chain, chains } from "@/lib/chains";
 import { toast } from "sonner";
 import { useSwitchChain } from "wagmi";
-import {
-  ChainDirection,
-  useEquito,
-} from "@/components/providers/equito-provider";
+import { ChainDirection, useEquito } from "./providers/equito/equito-provider";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
