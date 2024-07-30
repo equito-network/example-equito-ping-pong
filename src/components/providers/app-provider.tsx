@@ -4,9 +4,10 @@ import * as React from "react";
 import { RainbowKitProvider, midnightTheme } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { wagmiConfig } from "@/lib/config/wagmi";
+import { wagmiConfig } from "@/lib/wagmi";
 import { Toaster } from "@/components/ui/sonner";
-import { EquitoProvider } from "@/components/providers/equito-provider";
+import { PingPongProvider } from "./ping-pong/ping-pong-provider";
+import { EquitoProvider } from "./equito/equito-provider";
 
 const queryClient = new QueryClient();
 
@@ -21,8 +22,10 @@ export const AppProvider = ({ children }: React.PropsWithChildren<object>) => (
         })}
       >
         <EquitoProvider>
-          {children}
-          <Toaster />
+          <PingPongProvider>
+            {children}
+            <Toaster />
+          </PingPongProvider>
         </EquitoProvider>
       </RainbowKitProvider>
     </QueryClientProvider>

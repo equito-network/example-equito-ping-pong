@@ -14,13 +14,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown, Link } from "lucide-react";
-import { Chain, chains } from "@/lib/config/chains";
+import { Chain, chains } from "@/lib/chains";
 import { toast } from "sonner";
 import { useSwitchChain } from "wagmi";
-import {
-  ChainDirection,
-  useEquito,
-} from "@/components/providers/equito-provider";
+import { ChainDirection, useEquito } from "./providers/equito/equito-provider";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -30,7 +27,7 @@ type ChainSelectProps = PopoverTriggerProps & {
   mode: ChainDirection;
 };
 
-export default function ChainSelect({ mode }: ChainSelectProps) {
+export default function ChainSelect({ mode, disabled }: ChainSelectProps) {
   const [open, setOpen] = React.useState(false);
   const { chain, setChain } = useEquito()[mode];
   const { switchChainAsync } = useSwitchChain();
@@ -61,6 +58,7 @@ export default function ChainSelect({ mode }: ChainSelectProps) {
         <Button
           role="combobox"
           className={"w-full sm:w-72 flex items-center gap-2"}
+          disabled={disabled}
         >
           <div className="flex items-center gap-2">
             {chain ? (
