@@ -19,7 +19,7 @@ export const PingButton = () => {
   const isDisabled =
     !from.chain ||
     !to.chain ||
-    ping === undefined ||
+    !ping ||
     !address ||
     isPending ||
     pingFee.fee === undefined ||

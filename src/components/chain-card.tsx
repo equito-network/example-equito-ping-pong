@@ -57,7 +57,7 @@ export const ChainCard = ({ mode }: ChainCardProps) => {
               <Input
                 id="ping"
                 value={value}
-                placeholder="Hi from Equito!"
+                placeholder="Write your message..."
                 onChange={({ target: { value } }) => onInput?.(value)}
                 readOnly={mode === "to" || isProcessing}
                 disabled={mode === "to" || isProcessing}
