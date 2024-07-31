@@ -43,8 +43,10 @@ export const ChainCard = ({ mode }: ChainCardProps) => {
               {isTransactionFeeLoading ? (
                 <Skeleton className="w-full h-5" />
               ) : (
-                <p className="text-muted-foreground text-sm">
-                  {transactionFee === undefined
+                <p className="text-muted-foreground text-sm h-5">
+                  {!chain
+                    ? ""
+                    : transactionFee === undefined
                     ? "Fee not found"
                     : `Fee: ${Number(formatUnits(transactionFee, 18)).toFixed(
                         8
