@@ -3,7 +3,7 @@ import { AppProvider } from "@/components/providers/app-provider";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ChainCard } from "@/components/chain-card";
 import { PingButton } from "./components/ping-button";
-import equitoLogo from "./public/equito-logo.svg";
+import equitoLogo from "../public/equito-logo.svg";
 
 function App() {
   return (
