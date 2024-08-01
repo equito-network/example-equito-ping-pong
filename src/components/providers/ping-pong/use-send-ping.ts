@@ -16,7 +16,7 @@ export const useSendPing = () => {
   const { from, to } = useEquito();
   const { address } = useAccount();
   const { switchChainAsync } = useSwitchChain();
-  const { ping, pingFee } = usePingPong();
+  const { pingMessage, pingFee } = usePingPong();
 
   const {
     data: hash,
@@ -44,7 +44,7 @@ export const useSendPing = () => {
     if (pingFee.fee === undefined) {
       throw new Error("Fee not found");
     }
-    if (ping === undefined) {
+    if (pingMessage === undefined) {
       throw new Error("Ping message not found");
     }
 
@@ -58,7 +58,7 @@ export const useSendPing = () => {
         functionName: "sendPing",
         value: pingFee.fee,
         chainId: from.chain.definition.id,
-        args: [BigInt(to.chain.chainSelector), ping],
+        args: [BigInt(to.chain.chainSelector), pingMessage],
       });
 
       return await waitForTransactionReceipt(config, {
@@ -74,7 +74,7 @@ export const useSendPing = () => {
     from.chain,
     to.chain,
     pingFee.fee,
-    ping,
+    pingMessage,
     switchChainAsync,
     writeContractAsync,
   ]);

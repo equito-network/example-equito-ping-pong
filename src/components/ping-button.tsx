@@ -12,14 +12,14 @@ import { useEquito } from "./providers/equito/equito-provider";
 
 export const PingButton = () => {
   const { from, to } = useEquito();
-  const { ping, status, pingFee, pongFee } = usePingPong();
+  const { pingMessage, status, pingFee, pongFee } = usePingPong();
   const { execute, isPending } = useExecutePingPong();
 
   const { address } = useAccount();
   const isDisabled =
     !from.chain ||
     !to.chain ||
-    !ping ||
+    !pingMessage ||
     !address ||
     isPending ||
     pingFee.fee === undefined ||
