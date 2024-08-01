@@ -13,7 +13,7 @@ import { useEquito } from "../equito/equito-provider";
 export const useExecutePingPong = () => {
   const { from, to } = useEquito();
   const approve = useApprove();
-  const { setPong, setStatus, pongFee } = usePingPong();
+  const { setPongMessage, setStatus, pongFee } = usePingPong();
   const sendPing = useSendPing();
 
   const deliverPong = useDeliver({
@@ -33,7 +33,7 @@ export const useExecutePingPong = () => {
   } = useMutation({
     mutationFn: async () => {
       try {
-        setPong(undefined);
+        setPongMessage(undefined);
 
         if (!from.chain) {
           throw new Error("No from chain found");
@@ -100,7 +100,7 @@ export const useExecutePingPong = () => {
           sentPingMessage.messageData
         );
 
-        setPong(pong);
+        setPongMessage(pong);
 
         const { timestamp: sentPongTimestamp } = await getBlock(config, {
           chainId: to.chain.definition.id,

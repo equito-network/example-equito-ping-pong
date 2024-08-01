@@ -21,10 +21,10 @@ export type PingStatus =
   | "isDeliveringPong";
 
 type PingPongState = {
-  ping?: string;
-  setPing: Dispatch<SetStateAction<string | undefined>>;
-  pong?: string;
-  setPong: Dispatch<SetStateAction<string | undefined>>;
+  pingMessage?: string;
+  setPingMessage: Dispatch<SetStateAction<string | undefined>>;
+  pongMessage?: string;
+  setPongMessage: Dispatch<SetStateAction<string | undefined>>;
   status: PingStatus;
   setStatus: Dispatch<SetStateAction<PingStatus>>;
   pingFee: ReturnType<typeof usePingPongFee>;
@@ -36,8 +36,10 @@ type PingContext = PingPongState | undefined;
 const pingContext = createContext<PingContext>(undefined);
 
 export const PingPongProvider = ({ children }: PropsWithChildren<object>) => {
-  const [ping, setPing] = useState<PingPongState["ping"]>();
-  const [pong, setPong] = useState<PingPongState["ping"]>();
+  const [pingMessage, setPingMessage] =
+    useState<PingPongState["pingMessage"]>();
+  const [pongMessage, setPongMessage] =
+    useState<PingPongState["pingMessage"]>();
   const [status, setStatus] = useState<PingPongState["status"]>("isIdle");
 
   const { from, to } = useEquito();
@@ -46,16 +48,16 @@ export const PingPongProvider = ({ children }: PropsWithChildren<object>) => {
 
   const value = useMemo(
     () => ({
-      ping,
-      setPing,
-      pong,
-      setPong,
+      pingMessage,
+      setPingMessage,
+      pongMessage,
+      setPongMessage,
       status,
       setStatus,
       pingFee,
       pongFee,
     }),
-    [ping, pingFee, pong, pongFee, status]
+    [pingMessage, pingFee, pongMessage, pongFee, status]
   );
 
   return <pingContext.Provider value={value}>{children}</pingContext.Provider>;

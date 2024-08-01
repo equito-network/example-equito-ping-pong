@@ -13,13 +13,19 @@ type ChainCardProps = {
 };
 
 export const ChainCard = ({ mode }: ChainCardProps) => {
-  const { ping, setPing, pong, status, pingFee, pongFee } = usePingPong();
+  const { pingMessage, setPingMessage, pongMessage, status, pingFee, pongFee } =
+    usePingPong();
   const { address } = useAccount();
   const { chain } = useEquito()[mode];
 
-  const onInput = mode === "from" ? setPing : undefined;
+  const onInput = mode === "from" ? setPingMessage : undefined;
   const cardTitle = `${mode === "from" ? "Source" : "Destination"} Chain`;
-  const value = mode === "from" ? ping : pong ? pong : "Waiting for ping...";
+  const value =
+    mode === "from"
+      ? pingMessage
+      : pongMessage
+      ? pongMessage
+      : "Waiting for ping...";
   const label = `${mode === "from" ? "Ping" : "Pong"} Message`;
 
   const nativeCurrency = chain?.definition.nativeCurrency.symbol;
