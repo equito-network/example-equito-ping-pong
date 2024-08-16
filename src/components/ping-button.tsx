@@ -30,7 +30,7 @@ export const PingButton = () => {
   const onClick = () => {
     toast.promise(execute(), {
       loading: "Executing transaction...",
-      success: "Transaction successfull",
+      success: "Transaction successful!",
       error: "Transaction failed",
     });
   };
@@ -51,7 +51,7 @@ export const PingButton = () => {
       <>
         <ProgressLoader dir="from" />
         <p className="text-muted-foreground text-sm">
-          Approving sent ping message...
+          Waiting for ping approval...
         </p>
       </>
     ),
@@ -59,7 +59,7 @@ export const PingButton = () => {
       <>
         <ProgressLoader dir="from" />
         <p className="text-muted-foreground text-sm">
-          Delivery sent ping and sending pong...
+          Delivering ping and sending pong...
         </p>
       </>
     ),
@@ -67,7 +67,7 @@ export const PingButton = () => {
       <>
         <ProgressLoader dir="to" />
         <p className="text-muted-foreground text-sm">
-          Approving sent pong message...
+          Waiting for pong approval...
         </p>
       </>
     ),
@@ -82,7 +82,7 @@ export const PingButton = () => {
         <Button disabled={isDisabled} onClick={onClick}>
           Send Ping & Receive Pong
         </Button>
-        <p className="text-green-500 text-sm">Ping Pong Successfull!</p>
+        <p className="text-green-500 text-sm">Ping Pong Successful!</p>
       </>
     ),
     isError: (
