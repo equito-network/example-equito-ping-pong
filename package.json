@@ -11,10 +11,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@equito-sdk/client": "^0.1.4",
-    "@equito-sdk/core": "^0.1.4",
-    "@equito-sdk/evm": "^0.1.4",
-    "@equito-sdk/viem": "^0.1.4",
+    "@equito-sdk/client": "^0.1.5",
+    "@equito-sdk/core": "^0.1.5",
+    "@equito-sdk/evm": "^0.1.5",
+    "@equito-sdk/viem": "^0.1.5",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-popover": "^1.1.1",
